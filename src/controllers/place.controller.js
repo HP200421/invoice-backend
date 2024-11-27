@@ -3,7 +3,6 @@ import { Country } from "../models/country.model.js";
 import { City } from "../models/city.model.js";
 import { State } from "../models/state.model.js";
 import { ApiResponse } from "../utils/ApiResponse.js";
-import { ApiError } from "../utils/ApiError.js";
 
 export const getCountry = asyncHandler(async (req, res) => {
   const country = await Country.find().sort("name");
