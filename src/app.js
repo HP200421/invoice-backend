@@ -23,9 +23,11 @@ app.use(cookieParser());
 // We will import the routes here
 import userRouter from "./routes/user.routes.js";
 import placeRouter from "./routes/place.routes.js";
+import unitRoutter from "./routes/unit.routes.js";
 
 app.use("/api/v1/users", userRouter);
 app.use("/api/v1/place", placeRouter);
+app.use("/api/v1/unit", unitRoutter);
 
 app.use(errorHandler);
 export default app;
