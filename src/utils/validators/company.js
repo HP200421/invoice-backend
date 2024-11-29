@@ -13,8 +13,8 @@ export const validateCompany = [
   check("phone")
     .optional()
     .isString()
-    .matches(/^\d{7,15}$/)
-    .withMessage("Phone number must be 7 to 15 digits"),
+    .matches(/^\d{10}$/)
+    .withMessage("Phone number must be exactly 10 digits"),
 
   check("gstNumber")
     .optional()
