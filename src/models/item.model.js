@@ -35,6 +35,9 @@ const itemSchema = new Schema(
     sku: {
       type: String,
     },
+    sac: {
+      type: String,
+    },
     unit: {
       type: Schema.Types.ObjectId,
       ref: "Unit",

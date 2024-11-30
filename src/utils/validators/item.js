@@ -35,6 +35,12 @@ export const validateItem = [
     .matches(/^[a-zA-Z0-9]*$/)
     .withMessage("SKU must be alphanumeric"),
 
+  check("sku")
+    .optional()
+    .isString()
+    .matches(/^[a-zA-Z0-9]*$/)
+    .withMessage("SKU must be alphanumeric"),
+
   check("unit").optional().isMongoId().withMessage("Invalid unit ID"),
 ];
 
