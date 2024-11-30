@@ -21,6 +21,10 @@ export const createCompany = asyncHandler(async (req, res) => {
 
   const company = await Company.create(req.body);
 
+  if (!company) {
+    throw new ApiError(500, "Something went wrong while creating new company");
+  }
+
   return res
     .status(201)
     .json(new ApiResponse(201, { company }, "Company created successfully"));

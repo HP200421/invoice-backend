@@ -49,7 +49,7 @@ export const registerUser = asyncHandler(async (req, res) => {
     "-password -refreshToken"
   );
 
-  if (createdUser) {
+  if (!createdUser) {
     throw new ApiError(500, "Something went wrong while creating new user");
   }
 

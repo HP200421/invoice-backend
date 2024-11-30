@@ -25,11 +25,17 @@ import userRouter from "./routes/user.routes.js";
 import placeRouter from "./routes/place.routes.js";
 import unitRoutter from "./routes/unit.routes.js";
 import companyRouter from "./routes/company.routes.js";
+import clientRouter from "./routes/client.routes.js";
+import itemRouter from "./routes/item.routes.js";
+import invoiceRouter from "./routes/invoice.routes.js";
 
 app.use("/api/v1/users", userRouter);
 app.use("/api/v1/place", placeRouter);
 app.use("/api/v1/unit", unitRoutter);
 app.use("/api/v1/company", companyRouter);
+app.use("/api/v1/client", clientRouter);
+app.use("/api/v1/item", itemRouter);
+app.use("/api/v1/invoice", invoiceRouter);
 
 app.use(errorHandler);
 export default app;
