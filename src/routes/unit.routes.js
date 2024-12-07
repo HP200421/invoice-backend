@@ -12,8 +12,11 @@ import { handleValidationErrors } from "../utils/validators/handleValidation.js"
 const router = Router();
 router.use(verifyJwt);
 
-router.route("/").post(validateUnit, handleValidationErrors, createUnit);
-router.route("/getUnit").get(getUnits);
+router
+  .route("/")
+  .post(validateUnit, handleValidationErrors, createUnit)
+  .get(getUnits);
+
 router
   .route("/:id")
   .put(updateUnitId, handleValidationErrors, updateUnit)
