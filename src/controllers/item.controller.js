@@ -2,6 +2,7 @@ import { asyncHandler } from "../utils/asyncHandler.js";
 import { ApiError } from "../utils/ApiError.js";
 import { ApiResponse } from "../utils/ApiResponse.js";
 import { Item } from "../models/item.model.js";
+import queryDatabase from "../utils/fetchData.js";
 
 export const createItem = asyncHandler(async (req, res) => {
   req.body.user = req.user?._id;
@@ -18,11 +19,23 @@ export const createItem = asyncHandler(async (req, res) => {
 });
 
 export const getItems = asyncHandler(async (req, res) => {
-  const item = await Item.find().sort("name");
+  const queryParams = req.query;
+
+  const { pagination, results } = await queryDatabase(
+    Item,
+    Item.find({ user: req.user?._id }),
+    queryParams
+  );
 
   return res
     .status(200)
-    .json(new ApiResponse(200, { item }, "Item data fetched successfully"));
+    .json(
+      new ApiResponse(
+        200,
+        { items: results, pagination },
+        "Item data fetched successfully"
+      )
+    );
 });
 
 export const deleteItem = asyncHandler(async (req, res) => {

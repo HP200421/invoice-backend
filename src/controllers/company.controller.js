@@ -64,7 +64,7 @@ export const updateCompany = asyncHandler(async (req, res) => {
 });
 
 export const getCompany = asyncHandler(async (req, res) => {
-  const company = await Company.find();
+  const company = await Company.find({ user: req.user._id });
 
   if (!company) {
     throw new ApiError(404, "Company not found");

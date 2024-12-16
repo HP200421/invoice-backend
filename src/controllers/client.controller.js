@@ -2,6 +2,7 @@ import { Client } from "../models/client.model.js";
 import { ApiResponse } from "../utils/ApiResponse.js";
 import { ApiError } from "../utils/ApiError.js";
 import { asyncHandler } from "../utils/asyncHandler.js";
+import queryDatabase from "../utils/fetchData.js";
 
 export const createClient = asyncHandler(async (req, res) => {
   req.body.user = req.user?._id;
@@ -37,11 +38,23 @@ export const updateClient = asyncHandler(async (req, res) => {
 });
 
 export const getClients = asyncHandler(async (req, res) => {
-  const client = await Client.find().sort("name");
+  const queryParams = req.query;
+
+  const { pagination, results } = await queryDatabase(
+    Client,
+    Client.find({ user: req.user?._id }),
+    queryParams
+  );
 
   return res
     .status(200)
-    .json(new ApiResponse(200, { client }, "Client data fetched successfully"));
+    .json(
+      new ApiResponse(
+        200,
+        { clients: results, pagination },
+        "Client data fetched successfully"
+      )
+    );
 });
 
 export const deleteClient = asyncHandler(async (req, res) => {
