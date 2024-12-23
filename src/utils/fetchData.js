@@ -8,6 +8,7 @@ import mongoose from "mongoose";
  */
 const queryDatabase = async (model, query, queryParams) => {
   const filter = queryParams.filter;
+
   if (queryParams.filter) {
     console.log(filter);
     query = query.where(filter);
@@ -18,14 +19,32 @@ const queryDatabase = async (model, query, queryParams) => {
   }
 
   if (queryParams.populate) {
-    const populateFields = queryParams.populate.split(",");
-    populateFields.forEach((field) => {
-      query = query.populate(field);
-    });
+    if (queryParams.populate === "*") {
+      // If populate is "*", populate all fields in the model
+      const allFields = Object.keys(model.schema.paths); // Get all paths/fields in the model schema
+      allFields.forEach((field) => {
+        // Exclude internal fields like `__v`, `_id`, and any non-populatable fields
+        if (
+          field !== "__v" &&
+          field !== "_id" &&
+          model.schema.paths[field].instance === "ObjectId"
+        ) {
+          query = query.populate(field); // Populate the field
+        }
+      });
+    } else {
+      // Handle comma-separated populate fields
+      const populateFields = queryParams.populate.split(",");
+      populateFields.forEach((field) => {
+        query = query.populate(field);
+      });
+    }
   }
+
   if (queryParams.sort) {
     query = query.sort(queryParams.sort);
   }
+
   const page = queryParams.page || 1;
   const limit = queryParams.limit || 10;
   const skip = (page - 1) * limit;
