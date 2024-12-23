@@ -51,7 +51,7 @@ export const getClients = asyncHandler(async (req, res) => {
     .json(
       new ApiResponse(
         200,
-        { clients: results, pagination },
+        { data: results, pagination },
         "Client data fetched successfully"
       )
     );
