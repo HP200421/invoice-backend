@@ -20,7 +20,6 @@ export const createItem = asyncHandler(async (req, res) => {
 
 export const getItems = asyncHandler(async (req, res) => {
   const queryParams = req.query;
-  console.log(queryParams);
 
   const { pagination, results } = await queryDatabase(
     Item,

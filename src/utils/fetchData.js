@@ -58,6 +58,7 @@ const queryDatabase = async (model, query, queryParams) => {
     pagination: {
       total,
       page,
+      pageSize: limit,
       pages: Math.ceil(total / limit),
     },
     results,
