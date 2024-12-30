@@ -57,6 +57,28 @@ export const getClients = asyncHandler(async (req, res) => {
     );
 });
 
+export const getClientsById = asyncHandler(async (req, res) => {
+  const queryParams = req.query;
+  const { id } = req.params;
+  const userId = req.user?._id;
+
+  const { pagination, results } = await queryDatabase(
+    Client,
+    Client.findOne({ _id: id, user: userId }),
+    queryParams
+  );
+
+  return res
+    .status(200)
+    .json(
+      new ApiResponse(
+        200,
+        { data: results, pagination },
+        "Client data fetched successfully"
+      )
+    );
+});
+
 export const deleteClient = asyncHandler(async (req, res) => {
   const { id } = req.params;
   const client = await Client.findByIdAndDelete(id);

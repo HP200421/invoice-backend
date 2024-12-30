@@ -27,7 +27,9 @@ export const getUnits = asyncHandler(async (req, res) => {
 
   return res
     .status(200)
-    .json(new ApiResponse(200, { unit }, "Unit data fetched successfully"));
+    .json(
+      new ApiResponse(200, { data: unit }, "Unit data fetched successfully")
+    );
 });
 
 export const updateUnit = asyncHandler(async (req, res) => {
