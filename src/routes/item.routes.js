@@ -5,6 +5,7 @@ import { validateItem, validateItemUpdate } from "../utils/validators/item.js";
 import {
   createItem,
   getItems,
+  getItemsById,
   updateItem,
   deleteItem,
 } from "../controllers/item.controller.js";
@@ -19,6 +20,7 @@ router
 
 router
   .route("/:id")
+  .get(getItemsById)
   .put(validateItemUpdate, handleValidationErrors, updateItem)
   .delete(deleteItem);
 

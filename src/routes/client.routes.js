@@ -8,6 +8,7 @@ import {
 import {
   createClient,
   getClients,
+  getClientsById,
   deleteClient,
   updateClient,
 } from "../controllers/client.controller.js";
@@ -22,6 +23,7 @@ router
 
 router
   .route("/:id")
+  .get(getClientsById)
   .delete(deleteClient)
   .put(validateClientUpdate, handleValidationErrors, updateClient);
 

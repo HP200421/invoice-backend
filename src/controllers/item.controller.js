@@ -38,6 +38,28 @@ export const getItems = asyncHandler(async (req, res) => {
     );
 });
 
+export const getItemsById = asyncHandler(async (req, res) => {
+  const queryParams = req.query;
+  const { id } = req.params;
+  const userId = req.user?._id;
+
+  const { pagination, results } = await queryDatabase(
+    Item,
+    Item.findOne({ _id: id, user: userId }),
+    queryParams
+  );
+
+  return res
+    .status(200)
+    .json(
+      new ApiResponse(
+        200,
+        { data: results, pagination },
+        "Item data fetched successfully"
+      )
+    );
+});
+
 export const deleteItem = asyncHandler(async (req, res) => {
   const { id } = req.params;
 
