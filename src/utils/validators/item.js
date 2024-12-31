@@ -40,8 +40,6 @@ export const validateItem = [
     .isString()
     .matches(/^[a-zA-Z0-9]*$/)
     .withMessage("SKU must be alphanumeric"),
-
-  check("unit").optional().isMongoId().withMessage("Invalid unit ID"),
 ];
 
 export const validateItemUpdate = [
