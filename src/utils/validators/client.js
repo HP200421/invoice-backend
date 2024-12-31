@@ -68,18 +68,22 @@ export const validateClient = [
     .matches(/[A-Z]{5}[0-9]{4}[A-Z]{1}/)
     .withMessage("Invalid PAN number format"),
 
-  check("contactPerson.name")
+  // check("contactPerson")
+  //   .isArray({ min: 1 })
+  //   .withMessage("Contact persons must be an array with at least one person"),
+
+  check("contactPerson.*.name")
     .optional()
     .isString()
     .notEmpty()
-    .withMessage("Contact person name must be valid string"),
+    .withMessage("Contact person name must be a valid string"),
 
-  check("contactPerson.email")
+  check("contactPerson.*.email")
     .optional()
     .isEmail()
     .withMessage("Invalid contact person email format"),
 
-  check("contactPerson.phone")
+  check("contactPerson.*.phone")
     .optional()
     .matches(/^\d{10}$/)
     .withMessage("Contact person phone must be exactly 10 digits"),

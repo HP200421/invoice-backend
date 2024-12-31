@@ -80,7 +80,7 @@ const clientSchema = new Schema(
       type: String,
     },
     contactPerson: {
-      type: contactPersonSchema,
+      type: [contactPersonSchema],
     },
   },
   { timestamps: true }
