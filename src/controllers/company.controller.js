@@ -52,15 +52,13 @@ export const updateCompany = asyncHandler(async (req, res) => {
     logo: logo?.url || company?.logo,
   };
 
-  const updatedCompany = await Company.findByIdAndUpdate(id, updatedData, {
+  const data = await Company.findByIdAndUpdate(id, updatedData, {
     new: true,
   });
 
   return res
     .status(200)
-    .json(
-      new ApiResponse(200, { updatedCompany }, "Company updated successfully")
-    );
+    .json(new ApiResponse(200, { data }, "Company updated successfully"));
 });
 
 export const getCompany = asyncHandler(async (req, res) => {
@@ -73,6 +71,10 @@ export const getCompany = asyncHandler(async (req, res) => {
   return res
     .status(200)
     .json(
-      new ApiResponse(200, { company }, "Company data fetched successfully")
+      new ApiResponse(
+        200,
+        { data: company },
+        "Company data fetched successfully"
+      )
     );
 });

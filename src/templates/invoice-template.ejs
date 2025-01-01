@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Invoice <%= invoiceNumber %></title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            line-height: 1.6;
+            color: #333;
+        }
+        .container {
+            width: 80%;
+            margin: 0 auto;
+        }
+        .header {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+        .invoice-details {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 20px;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+        th, td {
+            border: 1px solid #ddd;
+            padding: 8px;
+            text-align: left;
+        }
+        .total {
+            text-align: right;
+            margin-top: 20px;
+        }
+        .footer {
+            margin-top: 40px;
+            font-size: 0.9em;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>INVOICE</h1>
+            <p>TM- <%= invoiceNumber %></p>
+        </div>
+
+        <div class="invoice-details">
+            <div>
+                <p>Vrukshvalli, Ground Floor, Phase 1, Sr. No 23, Anand Vihar, Hingne</p>
+                <p>Khurd, Pune, MH (27) 411051, IN</p>
+                <p>+919145295464</p>
+                <p>info@touchmediaads.com</p>
+                <p>Website: www.touchmediaads.com</p>
+            </div>
+            <div>
+                <p>Issue Date: <%= issueDate %></p>
+                <p>Due Date: <%= dueDate %></p>
+            </div>
+        </div>
+
+        <h2>Touchmedia</h2>
+        <h3>Bill To</h3>
+        <p><%= billTo %></p>
+
+        <table>
+            <thead>
+                <tr>
+                    <th>Item & Description</th>
+                    <th>Qty</th>
+                    <th>UoM</th>
+                    <th>Price</th>
+                    <th>Tax</th>
+                    <th>Discount</th>
+                    <th>Amount</th>
+                </tr>
+            </thead>
+            <tbody>
+                <% items.forEach(function(item) { %>
+                    <tr>
+                        <td><%= item.description %></td>
+                        <td><%= item.quantity %></td>
+                        <td><%= item.uom %></td>
+                        <td><%= item.price %></td>
+                        <td><%= item.tax %></td>
+                        <td><%= item.discount %></td>
+                        <td><%= item.amount %></td>
+                    </tr>
+                <% }); %>
+            </tbody>
+        </table>
+
+        <div class="total">
+            <p>Subtotal: ₹<%= subtotal %></p>
+            <p>Total Taxable Value: ₹<%= totalTaxableValue %></p>
+            <p>TOTAL: ₹<%= total %></p>
+            <p><%= totalInWords %></p>
+        </div>
+
+        <div class="footer">
+            <h3>Terms & Conditions</h3>
+            <p>Original Copy</p>
+            <p>Payment is to be made in favor of "Touchmedia".</p>
+            <p>Bank Details of Bank Account.</p>
+            <p>Name of Bank: HDFC Bank,</p>
+            <p>Account Number: 50200087811510,</p>
+            <p>IFSC Code : HDFC0000825, Branch : Hingne Khurd</p>
+            <p>Paytm. : 9145295464@paytm Gpay: 9145295464</p>
+            <p>This is computer generated invoice.</p>
+        </div>
+    </div>
+</body>
+</html>
+
