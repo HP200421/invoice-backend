@@ -21,7 +21,15 @@ export const validateCompany = [
     .matches(/^\d{2}[A-Z]{5}\d{4}[A-Z]{1}[1-9A-Z]{1}Z\d{1}$/)
     .withMessage("Invalid GST number format (15 characters, alphanumeric)"),
 
-  check("logo").optional().isURL().withMessage("Logo must be a valid URL"),
+  check("logo")
+    .optional()
+    .custom((value, { req }) => {
+      if (req.files && req.files.logo) {
+        return true;
+      }
+      return true;
+    })
+    .withMessage("Logo must be a valid file"),
 
   check("countryId").optional().isMongoId().withMessage("Invalid country ID"),
   check("stateId").optional().isMongoId().withMessage("Invalid state ID"),
