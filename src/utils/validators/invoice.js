@@ -21,6 +21,11 @@ export const validateInvoice = [
     .toDate()
     .withMessage("Invalid issue date"),
 
+  check("invoiceType")
+    .optional()
+    .isIn(["GST", "Non-GST"])
+    .withMessage('Invoice type must be one of "GST", "Non-GST"'),
+
   check("dueDate")
     .optional()
     .isISO8601()
