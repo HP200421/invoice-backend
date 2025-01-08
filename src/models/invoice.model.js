@@ -7,6 +7,11 @@ const invoiceSchema = new Schema(
       ref: "User",
       required: true,
     },
+    invoiceType: {
+      type: String,
+      enum: ["GST", "Non-GST"],
+      default: "GST",
+    },
     company: {
       type: Schema.Types.ObjectId,
       ref: "Company",
