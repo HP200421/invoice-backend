@@ -85,8 +85,6 @@ export const createInvoice = asyncHandler(async (req, res) => {
     req.body.pdfPublicId = uploadResponse?.public_id;
   }
 
-  console.log(req.body);
-
   const invoice = await Invoice.create(req.body);
 
   if (!invoice) {
