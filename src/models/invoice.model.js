@@ -9,7 +9,7 @@ const invoiceSchema = new Schema(
     },
     invoiceType: {
       type: String,
-      enum: ["GST", "Non-GST"],
+      enum: ["GST", "IGST", "Non-GST"],
       default: "GST",
     },
     company: {
@@ -43,10 +43,6 @@ const invoiceSchema = new Schema(
     note: {
       type: String,
     },
-    totolAmount: {
-      type: Number,
-      default: 0,
-    },
     items: [
       {
         type: Schema.Types.ObjectId,
@@ -55,6 +51,13 @@ const invoiceSchema = new Schema(
     ],
     pdfUrl: {
       type: String,
+    },
+    pdfPublicId: {
+      type: String,
+    },
+    totolAmount: {
+      type: Number,
+      default: 0,
     },
     taxAmount: {
       type: Number,

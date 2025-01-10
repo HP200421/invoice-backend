@@ -23,8 +23,8 @@ export const validateInvoice = [
 
   check("invoiceType")
     .optional()
-    .isIn(["GST", "Non-GST"])
-    .withMessage('Invoice type must be one of "GST", "Non-GST"'),
+    .isIn(["GST", "IGST", "Non-GST"])
+    .withMessage('Invoice type must be one of "GST", "IGST", "Non-GST"'),
 
   check("dueDate")
     .optional()

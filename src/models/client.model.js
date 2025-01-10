@@ -55,10 +55,6 @@ const clientSchema = new Schema(
     pincode: {
       type: String,
     },
-    openingBalance: {
-      type: Number,
-      default: 0,
-    },
     note: {
       type: String,
     },
