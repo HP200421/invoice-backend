@@ -45,8 +45,10 @@ const queryDatabase = async (model, query, queryParams) => {
     query = query.sort(queryParams.sort);
   }
 
-  const page = queryParams.page || 1;
-  const limit = queryParams.limit || 10;
+  // Pagination if we are testing this in postman use like this
+  // pagintion: { page: 1, limit: 2 }
+  const page = queryParams.pagination.page || 1;
+  const limit = queryParams.pagination.limit || 10;
   const skip = (page - 1) * limit;
 
   query = query.skip(skip).limit(limit);
