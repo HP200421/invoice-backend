@@ -42,6 +42,9 @@ const itemSchema = new Schema(
       type: Schema.Types.ObjectId,
       ref: "Unit",
     },
+    duration: {
+      type: String,
+    },
   },
   { timestamps: true }
 );

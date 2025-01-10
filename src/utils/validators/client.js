@@ -35,11 +35,6 @@ export const validateClient = [
     .isNumeric()
     .withMessage("Pincode must be a number"),
 
-  check("openingBalance")
-    .optional()
-    .isFloat({ min: 0 })
-    .withMessage("Opening balance must be a positive number"),
-
   check("note").optional().isString().withMessage("Note must be a string"),
 
   check("website").optional().isURL().withMessage("Invalid website URL"),

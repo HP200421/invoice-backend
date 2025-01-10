@@ -157,18 +157,18 @@
       </div>
 
       <div class="invoice-details">
-          <div class="company-details">
-              <h3><%= data.company.name %></h3>
-              <p><%= data.company.address %>, <%= data.company.pincode %></p>
-              <p>Phone: <%= data.company.phone %></p>
-              <p>Email: <%= data.company.email %></p>
-              <% if (data.invoiceType !== 'Non-GST') { %>
-                  <p>GSTIN: <%= data.company.gstNumber %></p>
-              <% } %>
-              <p>Website: <%= data.company.website %></p>
-          </div>
-         
-          <div class="invoice-info">
+        <div class="company-details">
+            <h3><%= data.company.name %></h3>
+            <p><%= data.company.address %>, <%= data.company.pincode %></p>
+            <p>Phone: <%= data.company.phone %></p>
+            <p>Email: <%= data.company.email %></p>
+            <% if (data.invoiceType !== 'Non-GST') { %>
+                <p>GSTIN: <%= data.company.gstNumber %></p>
+            <% } %>
+            <p>Website: <%= data.company.website %></p>
+        </div>
+    
+        <div class="invoice-info">
             <div class="info-amount">
                 <p><strong>Amount Due:</strong></p>
                 <p>₹<%= (data.totalAmount + data.taxAmount - data.discountAmount).toFixed(2) %></p>
@@ -182,9 +182,9 @@
                 <p><%= new Date(data.dueDate).toLocaleDateString('en-IN', { day: '2-digit', month: 'short', year: 'numeric' }) %></p>
             </div>
         </div>
-      </div>
-
-      <div class="client-details">
+    </div>
+    
+    <div class="client-details">
         <h3>Bill To</h3>
         <p><strong><%= data.client.name %></strong></p>
         <p><%= data.client.address %>, <%= data.client.pincode %></p>
@@ -192,75 +192,117 @@
             <p>GSTIN: <%= data.client.gstNumber %></p>
         <% } %>
         <p>PAN: <%= data.client.panNumber %></p>
-      </div>
-
-      <table>
-          <tr>
-              <th>S.No</th>
-              <th>Item & Description</th>
-              <th>HSN/SAC</th>
-              <th>Qty</th>
-              <th>Price (₹)</th>
-              <th>Taxable Value (₹)</th>
-              <% if (data.invoiceType !== 'Non-GST') { %>
-                  <th>CGST (₹)</th>
-                  <th>SGST (₹)</th>
-              <% } %>
-              <th>Amount (₹)</th>
-          </tr>
-          <% data.items.forEach((item, index) => { 
-              const itemTotal = item.quantity * item.price;
-              const cgst = (itemTotal * data.company.cgst / 100).toFixed(2);
-              const sgst = (itemTotal * data.company.sgst / 100).toFixed(2);
-          %>
-              <tr>
-                  <td><%= index + 1 %></td>
-                  <td>
-                      <%= item.name %><br>
-                      <small><%= item.description %></small>
-                  </td>
-                  <td><%= item.hsn || item.sac %></td>
-                  <td><%= item.quantity %></td>
-                  <td><%= item.price.toFixed(2) %></td>
-                  <td><%= itemTotal.toFixed(2) %></td>
-                  <% if (data.invoiceType !== 'Non-GST') { %>
-                      <td><%= cgst %> (<%= data.company.cgst %>%)</td>
-                      <td><%= sgst %> (<%= data.company.sgst %>%)</td>
-                  <% } %>
-                  <td><%= (itemTotal + (data.invoiceType !== 'Non-GST' ? parseFloat(cgst) + parseFloat(sgst) : 0)).toFixed(2) %></td>
-              </tr>
-          <% }); %>
-      </table>
+    </div>
+    
+    <table>
+        <tr>
+            <th>S.No</th>
+            <th>Item & Description</th>
+            <% if (data.invoiceType !== 'Non-GST') { %>
+                <th>HSN/SAC</th>
+            <% } %>
+            <th>Qty</th>
+            <% if (data.invoiceType === 'Non-GST') { %>
+                <th>Duration</th>
+            <% } %>
+            <th>Price (₹)</th>
+            <% if (data.invoiceType !== 'Non-GST') { %>
+            <th>Taxable Value (₹)</th>
+            <% } %>
+            <% if (data.invoiceType !== 'Non-GST' && data.invoiceType !== 'IGST') { %>
+                <th>CGST (₹)</th>
+                <th>SGST (₹)</th>
+            <% } %>
+            <% if (data.invoiceType === 'IGST') { %>
+                <th>IGST (₹)</th>
+            <% } %>
+            <th>Amount (₹)</th>
+        </tr>
+    
+        <% data.items.forEach((item, index) => { 
+            const itemTotal = item.quantity * item.price;
+            let cgst = 0, sgst = 0, igst = 0;
+    
+            if (data.invoiceType !== 'Non-GST') {
+                cgst = (itemTotal * data.company.cgst / 100).toFixed(2);
+                sgst = (itemTotal * data.company.sgst / 100).toFixed(2);
+            }
+            
+            if (data.invoiceType === 'IGST') {
+                igst = (itemTotal * data.company.igst / 100).toFixed(2);
+            }
+        %>
+            <tr>
+                <td><%= index + 1 %></td>
+                <td>
+                    <%= item.name %><br>
+                    <small><%= item.description %></small>
+                </td>
+                <% if (data.invoiceType !== 'Non-GST') { %>
+                    <td><%= item.hsn || item.sac %></td>
+                <% } %>
+                <td><%= item.quantity %></td>
+                <% if (data.invoiceType === 'Non-GST') { %>
+                    <td><%= item.duration %></td>
+                <% } %>
+                <td><%= item.price.toFixed(2) %></td>
+                <% if (data.invoiceType !== 'Non-GST') { %>
+                <td><%= itemTotal.toFixed(2) %></td>
+                <% } %>
+                <% if (data.invoiceType !== 'Non-GST' && data.invoiceType !== 'IGST') { %>
+                    <td><%= cgst %> (<%= data.company.cgst %>%)</td>
+                    <td><%= sgst %> (<%= data.company.sgst %>%)</td>
+                <% } %>
+                <% if (data.invoiceType === 'IGST') { %>
+                    <td><%= igst %> (<%= data.company.igst %>%)</td>
+                <% } %>
+                <td><%= (itemTotal + 
+                    (data.invoiceType === 'GST' ? parseFloat(cgst) + parseFloat(sgst) : 0) + 
+                    (data.invoiceType === 'IGST' ? parseFloat(igst) : 0)).toFixed(2) %></td>
+                
+            </tr>
+        <% }); %>
+    </table>
 
      
-      <div class="total-section-wrapper">
-          <div class="total-section">
-            <% if (data.invoiceType !== 'Non-GST') { %>
-             <div class="info-row">
-                 <p><strong>Total Taxable Value:</strong></p>
-                 <p>₹<%= data.totalAmount.toFixed(2) %></p>
-             </div>
-             <div class="info-row">
-                 <p><strong>Total Tax:</strong></p>
-                 <p>₹<%= data.taxAmount.toFixed(2) %></p>
-             </div>
+    <div class="total-section-wrapper">
+        <div class="total-section">
+            <% if (data.invoiceType === 'IGST') { %>
+                <div class="info-row">
+                    <p><strong>Total Taxable Value:</strong></p>
+                    <p>₹<%= data.totalAmount.toFixed(2) %></p>
+                </div>
+            <% } else if (data.invoiceType === 'GST') { %>
+                <div class="info-row">
+                    <p><strong>Total Taxable Value:</strong></p>
+                    <p>₹<%= data.totalAmount.toFixed(2) %></p>
+                </div>
+            <% } else if (data.invoiceType === 'Non-GST') { %>
+                <div class="info-row">
+                    <p><strong>Total Amount:</strong></p>
+                    <p>₹<%= data.totalAmount.toFixed(2) %></p>
+                </div>
+                <div class="info-row">
+                    <p><strong>Discount:</strong></p>
+                    <p>₹<%= data.discountAmount.toFixed(2) %></p>
+                </div>
             <% } %>
-             <div class="info-row">
-                 <p><strong>Rounded Off:</strong></p>
-                 <p>₹<%= (Math.round(data.totalAmount + data.taxAmount - data.discountAmount) - (data.totalAmount + data.taxAmount - data.discountAmount)).toFixed(2) %></p>
-             </div>
-             <div class="info-row">
-                 <p><strong>Total Value (in figure):</strong></p>
-                 <p>₹<%= Math.round(data.totalAmount + data.taxAmount - data.discountAmount) %></p>
-             </div>
-             <div class="info-row">
-                 <p><strong>Total Value (in words):</strong></p>
-                 <p>₹<%= Math.round(data.totalAmount + data.taxAmount - data.discountAmount) %></p>
-             </div>
-          </div>
-      </div>
     
-
+            <div class="info-row">
+                <p><strong>Rounded Off:</strong></p>
+                <p>₹<%= (Math.round(data.totalAmount + data.taxAmount - data.discountAmount) - (data.totalAmount + data.taxAmount - data.discountAmount)).toFixed(2) %></p>
+            </div>
+            <div class="info-row">
+                <p><strong>Total Value (in figure):</strong></p>
+                <p>₹<%= Math.round(data.netAmount) %></p>
+            </div>
+            <div class="info-row">
+                <p><strong>Total Value (in words):</strong></p>
+                <p>₹<%= data.netAmountInWords %></p>
+            </div>
+        </div>
+    </div>
+    
       <div class="footer">
           <h4>Terms & Conditions</h4>
           <p><%= data.terms %></p>
