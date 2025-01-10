@@ -55,7 +55,7 @@ const invoiceSchema = new Schema(
     pdfPublicId: {
       type: String,
     },
-    totolAmount: {
+    totalAmount: {
       type: Number,
       default: 0,
     },

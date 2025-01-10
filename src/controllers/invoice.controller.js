@@ -85,6 +85,8 @@ export const createInvoice = asyncHandler(async (req, res) => {
     req.body.pdfPublicId = uploadResponse?.public_id;
   }
 
+  console.log(req.body);
+
   const invoice = await Invoice.create(req.body);
 
   if (!invoice) {
@@ -188,6 +190,8 @@ export const updateInvoice = asyncHandler(async (req, res) => {
   let result;
   try {
     result = calculateInvoice(invoiceData);
+    req.body.totalAmount = result.totalAmount;
+    req.body.taxAmount = result.taxAmount;
   } catch (error) {
     throw new ApiError(500, error.message);
   }

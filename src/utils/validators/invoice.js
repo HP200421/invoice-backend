@@ -45,7 +45,7 @@ export const validateInvoice = [
 
   check("note").optional().isString().trim().escape(),
 
-  check("totolAmount")
+  check("totalAmount")
     .optional()
     .isFloat({ min: 0 })
     .withMessage("Total amount must be a positive number"),
